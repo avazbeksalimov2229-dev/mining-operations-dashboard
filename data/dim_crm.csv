@@ -1,0 +1,4 @@
+crm_id,certified_au_gpt,certified_sd_gpt,description
+CRM-A,0.52,0.025,Low-grade oxide reference material
+CRM-B,1.85,0.07,Medium-grade reference material
+CRM-C,4.6,0.16,High-grade sulphide reference material

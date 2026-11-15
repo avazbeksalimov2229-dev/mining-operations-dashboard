@@ -1,0 +1,1450 @@
+{
+  "compatibilityLevel": 1567,
+  "model": {
+    "culture": "en-US",
+    "sourceQueryCulture": "en-US",
+    "dataAccessOptions": {
+      "legacyRedirects": true,
+      "returnErrorValuesAsNull": true
+    },
+    "defaultPowerBIDataSourceVersion": "powerBI_V3",
+    "tables": [
+      {
+        "name": "fact_production_shift",
+        "columns": [
+          {
+            "name": "date",
+            "dataType": "dateTime",
+            "sourceColumn": "date",
+            "formatString": "yyyy-mm-dd",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "shift",
+            "dataType": "string",
+            "sourceColumn": "shift",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "pit_id",
+            "dataType": "string",
+            "sourceColumn": "pit_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "ore_t",
+            "dataType": "int64",
+            "sourceColumn": "ore_t",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "waste_t",
+            "dataType": "int64",
+            "sourceColumn": "waste_t",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "au_grade_gpt",
+            "dataType": "double",
+            "sourceColumn": "au_grade_gpt",
+            "formatString": "0.00",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "weather_delay_flag",
+            "dataType": "int64",
+            "sourceColumn": "weather_delay_flag",
+            "formatString": "0",
+            "summarizeBy": "none",
+            "isHidden": true
+          }
+        ],
+        "partitions": [
+          {
+            "name": "fact_production_shift",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"fact_production_shift.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {",
+                "        {\"date\", type date}, {\"shift\", type text}, {\"pit_id\", type text},",
+                "        {\"ore_t\", Int64.Type}, {\"waste_t\", Int64.Type}, {\"au_grade_gpt\", type number},",
+                "        {\"weather_delay_flag\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_mine_plan_monthly",
+        "columns": [
+          {
+            "name": "month_start",
+            "dataType": "dateTime",
+            "sourceColumn": "month_start",
+            "formatString": "yyyy-mm-dd",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "pit_id",
+            "dataType": "string",
+            "sourceColumn": "pit_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "plan_ore_t",
+            "dataType": "int64",
+            "sourceColumn": "plan_ore_t",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "plan_waste_t",
+            "dataType": "int64",
+            "sourceColumn": "plan_waste_t",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "plan_au_grade_gpt",
+            "dataType": "double",
+            "sourceColumn": "plan_au_grade_gpt",
+            "formatString": "0.00",
+            "summarizeBy": "none",
+            "isHidden": true
+          }
+        ],
+        "partitions": [
+          {
+            "name": "fact_mine_plan_monthly",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"fact_mine_plan_monthly.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {",
+                "        {\"month_start\", type date}, {\"pit_id\", type text}, {\"plan_ore_t\", Int64.Type},",
+                "        {\"plan_waste_t\", Int64.Type}, {\"plan_au_grade_gpt\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_equipment_daily",
+        "columns": [
+          {
+            "name": "date",
+            "dataType": "dateTime",
+            "sourceColumn": "date",
+            "formatString": "yyyy-mm-dd",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "equipment_id",
+            "dataType": "string",
+            "sourceColumn": "equipment_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "scheduled_h",
+            "dataType": "double",
+            "sourceColumn": "scheduled_h",
+            "formatString": "#,0.0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "operating_h",
+            "dataType": "double",
+            "sourceColumn": "operating_h",
+            "formatString": "#,0.0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "standby_h",
+            "dataType": "double",
+            "sourceColumn": "standby_h",
+            "formatString": "#,0.0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "planned_down_h",
+            "dataType": "double",
+            "sourceColumn": "planned_down_h",
+            "formatString": "#,0.0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "unplanned_down_h",
+            "dataType": "double",
+            "sourceColumn": "unplanned_down_h",
+            "formatString": "#,0.0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "loads",
+            "dataType": "int64",
+            "sourceColumn": "loads",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "tonnes_hauled",
+            "dataType": "int64",
+            "sourceColumn": "tonnes_hauled",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "metres_drilled",
+            "dataType": "double",
+            "sourceColumn": "metres_drilled",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "fuel_l",
+            "dataType": "int64",
+            "sourceColumn": "fuel_l",
+            "formatString": "#,0",
+            "summarizeBy": "none",
+            "isHidden": true
+          }
+        ],
+        "partitions": [
+          {
+            "name": "fact_equipment_daily",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"fact_equipment_daily.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    EmptyToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, {\"loads\", \"tonnes_hauled\", \"metres_drilled\"}),",
+                "    Typed = Table.TransformColumnTypes(EmptyToNull, {",
+                "        {\"date\", type date}, {\"equipment_id\", type text}, {\"scheduled_h\", type number},",
+                "        {\"operating_h\", type number}, {\"standby_h\", type number}, {\"planned_down_h\", type number},",
+                "        {\"unplanned_down_h\", type number}, {\"loads\", Int64.Type}, {\"tonnes_hauled\", Int64.Type},",
+                "        {\"metres_drilled\", type number}, {\"fuel_l\", Int64.Type}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_downtime_events",
+        "columns": [
+          {
+            "name": "event_id",
+            "dataType": "string",
+            "sourceColumn": "event_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "equipment_id",
+            "dataType": "string",
+            "sourceColumn": "equipment_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "start_datetime",
+            "dataType": "dateTime",
+            "sourceColumn": "start_datetime",
+            "formatString": "yyyy-mm-dd hh:nn",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "end_datetime",
+            "dataType": "dateTime",
+            "sourceColumn": "end_datetime",
+            "formatString": "yyyy-mm-dd hh:nn",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "duration_h",
+            "dataType": "double",
+            "sourceColumn": "duration_h",
+            "formatString": "#,0.0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "downtime_type",
+            "dataType": "string",
+            "sourceColumn": "downtime_type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "category",
+            "dataType": "string",
+            "sourceColumn": "category",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "description",
+            "dataType": "string",
+            "sourceColumn": "description",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "work_order",
+            "dataType": "string",
+            "sourceColumn": "work_order",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "start_date",
+            "dataType": "dateTime",
+            "sourceColumn": "start_date",
+            "formatString": "yyyy-mm-dd",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "fact_downtime_events",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"fact_downtime_events.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {",
+                "        {\"event_id\", type text}, {\"equipment_id\", type text}, {\"start_datetime\", type datetime},",
+                "        {\"end_datetime\", type datetime}, {\"duration_h\", type number}, {\"downtime_type\", type text},",
+                "        {\"category\", type text}, {\"description\", type text}, {\"work_order\", type text}}, \"en-US\"),",
+                "    StartDate = Table.AddColumn(Typed, \"start_date\", each Date.From([start_datetime]), type date)",
+                "in",
+                "    StartDate"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "fact_assays",
+        "columns": [
+          {
+            "name": "sample_id",
+            "dataType": "string",
+            "sourceColumn": "sample_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "batch_id",
+            "dataType": "string",
+            "sourceColumn": "batch_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "sample_date",
+            "dataType": "dateTime",
+            "sourceColumn": "sample_date",
+            "formatString": "yyyy-mm-dd",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "pit_id",
+            "dataType": "string",
+            "sourceColumn": "pit_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "lab",
+            "dataType": "string",
+            "sourceColumn": "lab",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "sample_type",
+            "dataType": "string",
+            "sourceColumn": "sample_type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "parent_sample_id",
+            "dataType": "string",
+            "sourceColumn": "parent_sample_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "crm_id",
+            "dataType": "string",
+            "sourceColumn": "crm_id",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "below_detection",
+            "dataType": "boolean",
+            "sourceColumn": "below_detection",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "au_value",
+            "dataType": "double",
+            "sourceColumn": "au_value",
+            "formatString": "0.00",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "type": "calculated",
+            "name": "CRM Z-Score",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": [
+              "IF (",
+              "    fact_assays[sample_type] = \"CRM\",",
+              "    DIVIDE ( fact_assays[au_value] - RELATED ( dim_crm[certified_au_gpt] ), RELATED ( dim_crm[certified_sd_gpt] ) )",
+              ")"
+            ],
+            "summarizeBy": "none",
+            "formatString": "0.00"
+          },
+          {
+            "type": "calculated",
+            "name": "Parent Au (g/t)",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": [
+              "IF (",
+              "    fact_assays[sample_type] = \"Field Duplicate\",",
+              "    LOOKUPVALUE ( fact_assays[au_value], fact_assays[sample_id], fact_assays[parent_sample_id] )",
+              ")"
+            ],
+            "summarizeBy": "none",
+            "formatString": "0.00"
+          },
+          {
+            "type": "calculated",
+            "name": "QC Status",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "SWITCH (",
+              "    fact_assays[sample_type],",
+              "    \"CRM\",",
+              "        SWITCH (",
+              "            TRUE (),",
+              "            ABS ( fact_assays[CRM Z-Score] ) > 3, \"Fail\",",
+              "            ABS ( fact_assays[CRM Z-Score] ) > 2, \"Warning\",",
+              "            \"Pass\"",
+              "        ),",
+              "    \"Blank\", IF ( fact_assays[au_value] > 0.05, \"Fail\", \"Pass\" ),",
+              "    \"Field Duplicate\",",
+              "        VAR a = fact_assays[Parent Au (g/t)]",
+              "        VAR b = fact_assays[au_value]",
+              "        VAR m = ( a + b ) / 2",
+              "        RETURN",
+              "            IF ( m < 0.1, \"Not assessed\", IF ( DIVIDE ( ABS ( a - b ), m ) > 0.2, \"Fail\", \"Pass\" ) ),",
+              "    BLANK ()",
+              ")"
+            ],
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "fact_assays",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"fact_assays.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {",
+                "        {\"sample_id\", type text}, {\"batch_id\", type text}, {\"sample_date\", type date}, {\"pit_id\", type text},",
+                "        {\"lab\", type text}, {\"sample_type\", type text}, {\"parent_sample_id\", type text},",
+                "        {\"crm_id\", type text}, {\"au_gpt\", type text}}, \"en-US\"),",
+                "    EmptyToNull = Table.ReplaceValue(Typed, \"\", null, Replacer.ReplaceValue, {\"parent_sample_id\", \"crm_id\"}),",
+                "    BelowDetection = Table.AddColumn(EmptyToNull, \"below_detection\", each Text.StartsWith([au_gpt], \"<\"), type logical),",
+                "    AuValue = Table.AddColumn(BelowDetection, \"au_value\",",
+                "        each if [below_detection] then 0.005 else Number.From([au_gpt], \"en-US\"), type number),",
+                "    Removed = Table.RemoveColumns(AuValue, {\"au_gpt\"})",
+                "in",
+                "    Removed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_pit",
+        "columns": [
+          {
+            "name": "pit_id",
+            "dataType": "string",
+            "sourceColumn": "pit_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "pit_name",
+            "dataType": "string",
+            "sourceColumn": "pit_name",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "ore_type",
+            "dataType": "string",
+            "sourceColumn": "ore_type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "start_date",
+            "dataType": "dateTime",
+            "sourceColumn": "start_date",
+            "formatString": "yyyy-mm-dd",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "avg_haul_distance_km",
+            "dataType": "double",
+            "sourceColumn": "avg_haul_distance_km",
+            "formatString": "0.0",
+            "summarizeBy": "sum"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_pit",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"dim_pit.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {",
+                "        {\"pit_id\", type text}, {\"pit_name\", type text}, {\"ore_type\", type text},",
+                "        {\"start_date\", type date}, {\"avg_haul_distance_km\", type number}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_equipment",
+        "columns": [
+          {
+            "name": "equipment_id",
+            "dataType": "string",
+            "sourceColumn": "equipment_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "equipment_type",
+            "dataType": "string",
+            "sourceColumn": "equipment_type",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "model",
+            "dataType": "string",
+            "sourceColumn": "model",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "rated_payload_t",
+            "dataType": "int64",
+            "sourceColumn": "rated_payload_t",
+            "formatString": "0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "manufacture_year",
+            "dataType": "int64",
+            "sourceColumn": "manufacture_year",
+            "formatString": "0",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "commissioned_date",
+            "dataType": "dateTime",
+            "sourceColumn": "commissioned_date",
+            "formatString": "yyyy-mm-dd",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "age_group",
+            "dataType": "string",
+            "sourceColumn": "age_group",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_equipment",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"dim_equipment.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    EmptyToNull = Table.ReplaceValue(Headers, \"\", null, Replacer.ReplaceValue, {\"rated_payload_t\"}),",
+                "    Typed = Table.TransformColumnTypes(EmptyToNull, {",
+                "        {\"equipment_id\", type text}, {\"equipment_type\", type text}, {\"model\", type text},",
+                "        {\"rated_payload_t\", Int64.Type}, {\"manufacture_year\", Int64.Type}, {\"commissioned_date\", type date}}, \"en-US\"),",
+                "    AgeGroup = Table.AddColumn(Typed, \"age_group\",",
+                "        each if [manufacture_year] <= 2017 then \"2017 or older\" else \"2018 or newer\", type text)",
+                "in",
+                "    AgeGroup"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_crm",
+        "columns": [
+          {
+            "name": "crm_id",
+            "dataType": "string",
+            "sourceColumn": "crm_id",
+            "summarizeBy": "none"
+          },
+          {
+            "name": "certified_au_gpt",
+            "dataType": "double",
+            "sourceColumn": "certified_au_gpt",
+            "formatString": "0.00",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "certified_sd_gpt",
+            "dataType": "double",
+            "sourceColumn": "certified_sd_gpt",
+            "formatString": "0.000",
+            "summarizeBy": "none",
+            "isHidden": true
+          },
+          {
+            "name": "description",
+            "dataType": "string",
+            "sourceColumn": "description",
+            "summarizeBy": "none"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_crm",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = Csv.Document(File.Contents(DataFolder & \"dim_crm.csv\"), [Delimiter = \",\", Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),",
+                "    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),",
+                "    Typed = Table.TransformColumnTypes(Headers, {",
+                "        {\"crm_id\", type text}, {\"certified_au_gpt\", type number}, {\"certified_sd_gpt\", type number},",
+                "        {\"description\", type text}}, \"en-US\")",
+                "in",
+                "    Typed"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "dim_date",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Date",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Date]",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd",
+            "isKey": true
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Year",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Year]",
+            "summarizeBy": "none"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Quarter",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Quarter]",
+            "summarizeBy": "none"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Year Quarter",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Year Quarter]",
+            "summarizeBy": "none"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Month Number",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Month Number]",
+            "summarizeBy": "none"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Month",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Month]",
+            "summarizeBy": "none",
+            "sortByColumn": "Month Number"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Year Month",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Year Month]",
+            "summarizeBy": "none"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Month Start",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Month Start]",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Days In Month",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Days In Month]",
+            "summarizeBy": "none"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Week Start",
+            "dataType": "dateTime",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Week Start]",
+            "summarizeBy": "none",
+            "formatString": "yyyy-mm-dd"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "dim_date",
+            "mode": "import",
+            "source": {
+              "type": "calculated",
+              "expression": "ADDCOLUMNS (\n    CALENDAR ( DATE ( 2025, 1, 1 ), DATE ( 2026, 6, 30 ) ),\n    \"Year\", YEAR ( [Date] ),\n    \"Quarter\", \"Q\" & QUARTER ( [Date] ),\n    \"Year Quarter\", YEAR ( [Date] ) & \"-Q\" & QUARTER ( [Date] ),\n    \"Month Number\", MONTH ( [Date] ),\n    \"Month\", FORMAT ( [Date], \"MMM\" ),\n    \"Year Month\", FORMAT ( [Date], \"YYYY-MM\" ),\n    \"Month Start\", DATE ( YEAR ( [Date] ), MONTH ( [Date] ), 1 ),\n    \"Days In Month\", DAY ( EOMONTH ( [Date], 0 ) ),\n    \"Week Start\", [Date] - WEEKDAY ( [Date], 2 ) + 1\n)"
+            }
+          }
+        ],
+        "dataCategory": "Time"
+      },
+      {
+        "name": "_Measures",
+        "columns": [
+          {
+            "name": "Placeholder",
+            "dataType": "string",
+            "sourceColumn": "Placeholder",
+            "summarizeBy": "none",
+            "isHidden": true
+          }
+        ],
+        "partitions": [
+          {
+            "name": "_Measures",
+            "mode": "import",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #table(type table [Placeholder = text], {})",
+                "in",
+                "    Source"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Ore Mined (t)",
+            "expression": "SUM ( fact_production_shift[ore_t] )",
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Waste Mined (t)",
+            "expression": "SUM ( fact_production_shift[waste_t] )",
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Total Material (t)",
+            "expression": "[Ore Mined (t)] + [Waste Mined (t)]",
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Strip Ratio",
+            "expression": "DIVIDE ( [Waste Mined (t)], [Ore Mined (t)] )",
+            "formatString": "0.00",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Head Grade (g/t)",
+            "expression": [
+              "DIVIDE (",
+              "    SUMX ( fact_production_shift, fact_production_shift[ore_t] * fact_production_shift[au_grade_gpt] ),",
+              "    [Ore Mined (t)]",
+              ")"
+            ],
+            "formatString": "0.00",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Contained Gold (oz)",
+            "expression": [
+              "DIVIDE (",
+              "    SUMX ( fact_production_shift, fact_production_shift[ore_t] * fact_production_shift[au_grade_gpt] ),",
+              "    31.1035",
+              ")"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Avg Daily Material (t)",
+            "expression": "AVERAGEX ( VALUES ( dim_date[Date] ), [Total Material (t)] )",
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Avg Daily Material - Weather Days (t)",
+            "expression": "CALCULATE ( [Avg Daily Material (t)], fact_production_shift[weather_delay_flag] = 1 )",
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Avg Daily Material - Normal Days (t)",
+            "expression": "CALCULATE ( [Avg Daily Material (t)], fact_production_shift[weather_delay_flag] = 0 )",
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Ore Mined PY (t)",
+            "expression": "CALCULATE ( [Ore Mined (t)], SAMEPERIODLASTYEAR ( dim_date[Date] ) )",
+            "formatString": "#,0",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Ore Mined YoY %",
+            "expression": "DIVIDE ( [Ore Mined (t)] - [Ore Mined PY (t)], [Ore Mined PY (t)] )",
+            "formatString": "0.0%",
+            "displayFolder": "1 Production"
+          },
+          {
+            "name": "Plan Ore (t)",
+            "expression": [
+              "SUMX (",
+              "    VALUES ( dim_date[Month Start] ),",
+              "    VAR m = dim_date[Month Start]",
+              "    VAR DaysSelected = CALCULATE ( COUNTROWS ( dim_date ) )",
+              "    VAR DaysInMonth = DAY ( EOMONTH ( m, 0 ) )",
+              "    VAR MonthPlan =",
+              "        CALCULATE (",
+              "            SUM ( fact_mine_plan_monthly[plan_ore_t] ),",
+              "            REMOVEFILTERS ( dim_date ),",
+              "            dim_date[Month Start] = m",
+              "        )",
+              "    RETURN MonthPlan * DIVIDE ( DaysSelected, DaysInMonth )",
+              ")"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Plan Waste (t)",
+            "expression": [
+              "SUMX (",
+              "    VALUES ( dim_date[Month Start] ),",
+              "    VAR m = dim_date[Month Start]",
+              "    VAR Share = DIVIDE ( CALCULATE ( COUNTROWS ( dim_date ) ), DAY ( EOMONTH ( m, 0 ) ) )",
+              "    RETURN",
+              "        Share * CALCULATE ( SUM ( fact_mine_plan_monthly[plan_waste_t] ), REMOVEFILTERS ( dim_date ), dim_date[Month Start] = m )",
+              ")"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Plan Contained Gold (oz)",
+            "expression": [
+              "SUMX (",
+              "    VALUES ( dim_date[Month Start] ),",
+              "    VAR m = dim_date[Month Start]",
+              "    VAR Share = DIVIDE ( CALCULATE ( COUNTROWS ( dim_date ) ), DAY ( EOMONTH ( m, 0 ) ) )",
+              "    RETURN",
+              "        Share",
+              "            * CALCULATE (",
+              "                SUMX ( fact_mine_plan_monthly, fact_mine_plan_monthly[plan_ore_t] * fact_mine_plan_monthly[plan_au_grade_gpt] ),",
+              "                REMOVEFILTERS ( dim_date ),",
+              "                dim_date[Month Start] = m",
+              "            )",
+              ") / 31.1035"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Plan Grade (g/t)",
+            "expression": "DIVIDE ( [Plan Contained Gold (oz)] * 31.1035, [Plan Ore (t)] )",
+            "formatString": "0.00",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Ore Plan Attainment %",
+            "expression": "DIVIDE ( [Ore Mined (t)], [Plan Ore (t)] )",
+            "formatString": "0.0%",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Gold Plan Attainment %",
+            "expression": "DIVIDE ( [Contained Gold (oz)], [Plan Contained Gold (oz)] )",
+            "formatString": "0.0%",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Ore Variance to Plan (t)",
+            "expression": "[Ore Mined (t)] - [Plan Ore (t)]",
+            "formatString": "#,0",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Gold Variance to Plan (oz)",
+            "expression": "[Contained Gold (oz)] - [Plan Contained Gold (oz)]",
+            "formatString": "#,0",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Grade Variance %",
+            "expression": "DIVIDE ( [Head Grade (g/t)] - [Plan Grade (g/t)], [Plan Grade (g/t)] )",
+            "formatString": "0.0%",
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Attainment Color",
+            "expression": [
+              "SWITCH (",
+              "    TRUE (),",
+              "    [Ore Plan Attainment %] >= 1, \"#16A34A\",",
+              "    [Ore Plan Attainment %] >= 0.95, \"#F59E0B\",",
+              "    \"#DC2626\"",
+              ")"
+            ],
+            "displayFolder": "2 Plan"
+          },
+          {
+            "name": "Scheduled Hours",
+            "expression": "SUM ( fact_equipment_daily[scheduled_h] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Operating Hours",
+            "expression": "SUM ( fact_equipment_daily[operating_h] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Standby Hours",
+            "expression": "SUM ( fact_equipment_daily[standby_h] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Planned Downtime Hours",
+            "expression": "SUM ( fact_equipment_daily[planned_down_h] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Unplanned Downtime Hours",
+            "expression": "SUM ( fact_equipment_daily[unplanned_down_h] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Available Hours",
+            "expression": "[Scheduled Hours] - [Planned Downtime Hours] - [Unplanned Downtime Hours]",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Physical Availability %",
+            "expression": "DIVIDE ( [Available Hours], [Scheduled Hours] )",
+            "formatString": "0.0%",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Use of Availability %",
+            "expression": "DIVIDE ( [Operating Hours], [Available Hours] )",
+            "formatString": "0.0%",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Effective Utilization %",
+            "expression": "DIVIDE ( [Operating Hours], [Scheduled Hours] )",
+            "formatString": "0.0%",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Tonnes Hauled",
+            "expression": "SUM ( fact_equipment_daily[tonnes_hauled] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Truck Loads",
+            "expression": "SUM ( fact_equipment_daily[loads] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Avg Payload (t)",
+            "expression": "DIVIDE ( [Tonnes Hauled], [Truck Loads] )",
+            "formatString": "#,0.0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Truck Productivity (t/op h)",
+            "expression": "DIVIDE ( [Tonnes Hauled], CALCULATE ( [Operating Hours], dim_equipment[equipment_type] = \"Haul Truck\" ) )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Metres Drilled",
+            "expression": "SUM ( fact_equipment_daily[metres_drilled] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Fuel (L)",
+            "expression": "SUM ( fact_equipment_daily[fuel_l] )",
+            "formatString": "#,0",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Fuel per Tonne (L/t)",
+            "expression": "DIVIDE ( [Fuel (L)], [Total Material (t)] )",
+            "formatString": "0.000",
+            "displayFolder": "3 Fleet"
+          },
+          {
+            "name": "Downtime Hours",
+            "expression": "SUM ( fact_downtime_events[duration_h] )",
+            "formatString": "#,0",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "Breakdowns",
+            "expression": "CALCULATE ( COUNTROWS ( fact_downtime_events ), fact_downtime_events[downtime_type] = \"Unplanned\" )",
+            "formatString": "#,0",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "Breakdown Hours",
+            "expression": "CALCULATE ( [Downtime Hours], fact_downtime_events[downtime_type] = \"Unplanned\" )",
+            "formatString": "#,0",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "MTBF (h)",
+            "expression": "DIVIDE ( [Operating Hours], [Breakdowns] )",
+            "formatString": "#,0.0",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "MTTR (h)",
+            "expression": "DIVIDE ( [Breakdown Hours], [Breakdowns] )",
+            "formatString": "#,0.0",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "Downtime Cumulative %",
+            "expression": [
+              "VAR CurrentHours = [Downtime Hours]",
+              "VAR Categories =",
+              "    ADDCOLUMNS ( ALLSELECTED ( fact_downtime_events[category] ), \"@hours\", [Downtime Hours] )",
+              "VAR Cumulative = SUMX ( FILTER ( Categories, [@hours] >= CurrentHours ), [@hours] )",
+              "RETURN DIVIDE ( Cumulative, SUMX ( Categories, [@hours] ) )"
+            ],
+            "formatString": "0.0%",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "Equipment Rank (Breakdown Hours)",
+            "expression": "RANKX ( ALLSELECTED ( dim_equipment[equipment_id] ), [Breakdown Hours],, DESC, DENSE )",
+            "formatString": "#,0",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "Breakdown Cumulative %",
+            "expression": [
+              "VAR CurrentHours = [Breakdown Hours]",
+              "VAR Categories =",
+              "    FILTER (",
+              "        ADDCOLUMNS ( ALLSELECTED ( fact_downtime_events[category] ), \"@hours\", [Breakdown Hours] ),",
+              "        NOT ISBLANK ( [@hours] )",
+              "    )",
+              "VAR Cumulative = SUMX ( FILTER ( Categories, [@hours] >= CurrentHours ), [@hours] )",
+              "RETURN IF ( NOT ISBLANK ( CurrentHours ), DIVIDE ( Cumulative, SUMX ( Categories, [@hours] ) ) )"
+            ],
+            "formatString": "0.0%",
+            "displayFolder": "4 Downtime"
+          },
+          {
+            "name": "Samples",
+            "expression": "COUNTROWS ( fact_assays )",
+            "formatString": "#,0",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Primary Samples",
+            "expression": "CALCULATE ( [Samples], fact_assays[sample_type] = \"Primary\" )",
+            "formatString": "#,0",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "QC Samples",
+            "expression": "CALCULATE ( [Samples], fact_assays[sample_type] <> \"Primary\" )",
+            "formatString": "#,0",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "QC Insertion Rate %",
+            "expression": "DIVIDE ( [QC Samples], [Primary Samples] )",
+            "formatString": "0.0%",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "QC Assessed",
+            "expression": "CALCULATE ( [Samples], fact_assays[QC Status] IN { \"Pass\", \"Warning\", \"Fail\" } )",
+            "formatString": "#,0",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "QC Failures",
+            "expression": "CALCULATE ( [Samples], fact_assays[QC Status] = \"Fail\" )",
+            "formatString": "#,0",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "QC Failure Rate %",
+            "expression": "DIVIDE ( COALESCE ( [QC Failures], 0 ), [QC Assessed] )",
+            "formatString": "0.0%",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "CRM Failure Rate %",
+            "expression": "CALCULATE ( [QC Failure Rate %], fact_assays[sample_type] = \"CRM\" )",
+            "formatString": "0.0%",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Blank Failure Rate %",
+            "expression": "CALCULATE ( [QC Failure Rate %], fact_assays[sample_type] = \"Blank\" )",
+            "formatString": "0.0%",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Duplicate Failure Rate %",
+            "expression": "CALCULATE ( [QC Failure Rate %], fact_assays[sample_type] = \"Field Duplicate\" )",
+            "formatString": "0.0%",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Avg Assay (g/t)",
+            "expression": "AVERAGE ( fact_assays[au_value] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Max Assay (g/t)",
+            "expression": "MAX ( fact_assays[au_value] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "CRM Certified (g/t)",
+            "expression": "SELECTEDVALUE ( dim_crm[certified_au_gpt] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "CRM +2 SD",
+            "expression": "[CRM Certified (g/t)] + 2 * SELECTEDVALUE ( dim_crm[certified_sd_gpt] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "CRM -2 SD",
+            "expression": "[CRM Certified (g/t)] - 2 * SELECTEDVALUE ( dim_crm[certified_sd_gpt] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "CRM +3 SD",
+            "expression": "[CRM Certified (g/t)] + 3 * SELECTEDVALUE ( dim_crm[certified_sd_gpt] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "CRM -3 SD",
+            "expression": "[CRM Certified (g/t)] - 3 * SELECTEDVALUE ( dim_crm[certified_sd_gpt] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Blank Limit (g/t)",
+            "expression": "0.05",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Duplicate Original (g/t)",
+            "expression": "SUM ( fact_assays[Parent Au (g/t)] )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "Duplicate Result (g/t)",
+            "expression": "CALCULATE ( SUM ( fact_assays[au_value] ), fact_assays[sample_type] = \"Field Duplicate\" )",
+            "formatString": "0.00",
+            "displayFolder": "5 QAQC"
+          },
+          {
+            "name": "KPI Ore Sub",
+            "expression": "FORMAT ( [Ore Plan Attainment %], \"0.0%\" ) & \" of plan\"",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "KPI Grade Sub",
+            "expression": "FORMAT ( [Grade Variance %], \"+0.0%;-0.0%\" ) & \" vs plan grade\"",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "KPI Gold Sub",
+            "expression": "FORMAT ( [Gold Plan Attainment %], \"0.0%\" ) & \" of plan\"",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "KPI Strip Sub",
+            "expression": "FORMAT ( [Total Material (t)] / 1e6, \"0.00\" ) & \" Mt material moved\"",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "KPI Availability Sub",
+            "expression": "\"Use of availability \" & FORMAT ( [Use of Availability %], \"0.0%\" )",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "KPI QC Sub",
+            "expression": "\"CRM failures \" & FORMAT ( [CRM Failure Rate %], \"0.0%\" )",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "KPI Weather Sub",
+            "expression": "FORMAT ( DIVIDE ( [Avg Daily Material - Weather Days (t)], [Avg Daily Material - Normal Days (t)] ) - 1, \"+0%;-0%\" ) & \" vs normal days\"",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "QC Fail Color",
+            "expression": [
+              "SWITCH (",
+              "    TRUE (),",
+              "    ISBLANK ( [CRM Failure Rate %] ), BLANK (),",
+              "    [CRM Failure Rate %] >= 0.05, \"#DC2626\",",
+              "    [CRM Failure Rate %] >= 0.025, \"#F59E0B\",",
+              "    \"#16A34A\"",
+              ")"
+            ],
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "Title Overview",
+            "expression": "\"Mine overview · \" & FORMAT ( MIN ( dim_date[Date] ), \"d mmm yyyy\" ) & \" – \" & FORMAT ( MAX ( dim_date[Date] ), \"d mmm yyyy\" )",
+            "displayFolder": "9 Labels"
+          },
+          {
+            "name": "Plan Status Text",
+            "expression": [
+              "VAR v = [Ore Variance to Plan (t)]",
+              "RETURN",
+              "    IF ( v >= 0, \"Ahead of plan by \", \"Behind plan by \" ) & FORMAT ( ABS ( v ), \"#,0\" ) & \" t\""
+            ],
+            "displayFolder": "9 Labels"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "9fee34d1-40c3-5315-a740-875b601a66e1",
+        "fromTable": "fact_production_shift",
+        "fromColumn": "date",
+        "toTable": "dim_date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "b05c6d28-43f5-5039-91c9-c95a8c0e8602",
+        "fromTable": "fact_mine_plan_monthly",
+        "fromColumn": "month_start",
+        "toTable": "dim_date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "32755101-3e11-5989-a932-e79729fd3505",
+        "fromTable": "fact_equipment_daily",
+        "fromColumn": "date",
+        "toTable": "dim_date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "1bbd07fb-88c4-50d9-b13a-054ee56daf23",
+        "fromTable": "fact_downtime_events",
+        "fromColumn": "start_date",
+        "toTable": "dim_date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "0a1bcf9e-3d1c-58ef-aeee-e88d6af26d4d",
+        "fromTable": "fact_assays",
+        "fromColumn": "sample_date",
+        "toTable": "dim_date",
+        "toColumn": "Date"
+      },
+      {
+        "name": "eef69e46-f127-5bfe-854d-1a0d794a1aec",
+        "fromTable": "fact_production_shift",
+        "fromColumn": "pit_id",
+        "toTable": "dim_pit",
+        "toColumn": "pit_id"
+      },
+      {
+        "name": "39f03ae9-d642-592f-9cc4-8bf68f358f24",
+        "fromTable": "fact_mine_plan_monthly",
+        "fromColumn": "pit_id",
+        "toTable": "dim_pit",
+        "toColumn": "pit_id"
+      },
+      {
+        "name": "3fc0ca9d-5d9e-58f3-aff8-7f1726022343",
+        "fromTable": "fact_assays",
+        "fromColumn": "pit_id",
+        "toTable": "dim_pit",
+        "toColumn": "pit_id"
+      },
+      {
+        "name": "db0bfd92-5fd6-5410-89d1-49bc82b17c46",
+        "fromTable": "fact_equipment_daily",
+        "fromColumn": "equipment_id",
+        "toTable": "dim_equipment",
+        "toColumn": "equipment_id"
+      },
+      {
+        "name": "45e45c71-0067-5572-896a-5ba89770283e",
+        "fromTable": "fact_downtime_events",
+        "fromColumn": "equipment_id",
+        "toTable": "dim_equipment",
+        "toColumn": "equipment_id"
+      },
+      {
+        "name": "eee6dfb9-34ea-58c7-aa1e-5aff01b7d118",
+        "fromTable": "fact_assays",
+        "fromColumn": "crm_id",
+        "toTable": "dim_crm",
+        "toColumn": "crm_id"
+      }
+    ],
+    "expressions": [
+      {
+        "name": "DataFolder",
+        "kind": "m",
+        "expression": "\"C:\\Users\\Avazbek\\Portfolio\\portfolio\\01-mining-operations-dashboard\\data\\\" meta [IsParameterQuery=true, Type=\"Text\", IsParameterQueryRequired=true]",
+        "annotations": [
+          {
+            "name": "PBI_ResultType",
+            "value": "Text"
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "__PBI_TimeIntelligenceEnabled",
+        "value": "0"
+      },
+      {
+        "name": "PBI_ProTooling",
+        "value": "[\"DevMode\"]"
+      }
+    ]
+  }
+}

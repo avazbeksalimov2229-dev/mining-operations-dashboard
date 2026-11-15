@@ -1,0 +1,4 @@
+pit_id,pit_name,ore_type,start_date,avg_haul_distance_km
+P1,North Pit,Oxide,2025-01-01,2.8
+P2,South Pit,Sulphide,2025-01-01,3.6
+P3,East Pit,Oxide,2025-07-01,4.4
